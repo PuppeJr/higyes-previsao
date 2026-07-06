@@ -425,105 +425,147 @@ function App() {
         <p style={{ textAlign: 'center', color: currentTheme.textMuted }}>Monte o pedido e calcule quando o cliente deve comprar novamente</p>
 
         {/* Dados do Cliente */}
-        <div style={{ 
-          backgroundColor: currentTheme.cardBackground, 
-          padding: '20px', 
-          borderRadius: '8px', 
-          marginBottom: '20px', 
-          border: `1px solid ${currentTheme.borderColor}`, 
-          boxShadow: currentTheme.shadow 
-        }}>
-          <h4 style={{ marginTop: 0, marginBottom: '15px', color: currentTheme.textPrimary }}>📋 Dados do Cliente</h4>
-          <div className="grid-3" style={{ gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Cliente *</label>
-              <input type="text" value={clienteAtual} onChange={(e) => setClienteAtual(e.target.value)} placeholder="Nome do cliente" style={inputStyle} />
-            </div>
-            <div>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Data do último pedido *</label>
-              <input type="date" value={dataUltimoPedido} onChange={(e) => setDataUltimoPedido(e.target.value)} style={inputStyle} />
-            </div>
-            <div>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Consumo médio diário (caixas/dia)</label>
-              <input type="number" value={consumoDiario} onChange={(e) => setConsumoDiario(Number(e.target.value))} step="0.1" min="0.1" style={inputStyle} />
-            </div>
-          </div>
-          <div style={{ marginTop: '12px' }}>
-            <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Observações (opcional)</label>
-            <input type="text" value={observacao} onChange={(e) => setObservacao(e.target.value)} placeholder="Ex: pedido grande, promoção..." style={inputStyle} />
-          </div>
-        </div>
+        {/* Dados do Cliente */}
+<div style={{ 
+  backgroundColor: currentTheme.cardBackground, 
+  padding: '16px', 
+  borderRadius: '8px', 
+  marginBottom: '20px', 
+  border: `1px solid ${currentTheme.borderColor}`, 
+  boxShadow: currentTheme.shadow 
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: '12px', color: currentTheme.textPrimary, fontSize: '1.1rem' }}>📋 Dados do Cliente</h4>
+  <div className="grid-3" style={{ gap: '12px' }}>
+    <div>
+      <label style={{ display: 'block', marginBottom: '3px', fontWeight: 'bold', color: currentTheme.textSecondary, fontSize: '0.85rem' }}>Cliente *</label>
+      <input type="text" value={clienteAtual} onChange={(e) => setClienteAtual(e.target.value)} placeholder="Nome do cliente" style={inputStyle} />
+    </div>
+    <div>
+      <label style={{ display: 'block', marginBottom: '3px', fontWeight: 'bold', color: currentTheme.textSecondary, fontSize: '0.85rem' }}>Data do último pedido *</label>
+      <input type="date" value={dataUltimoPedido} onChange={(e) => setDataUltimoPedido(e.target.value)} style={inputStyle} />
+    </div>
+    <div>
+      <label style={{ display: 'block', marginBottom: '3px', fontWeight: 'bold', color: currentTheme.textSecondary, fontSize: '0.85rem' }}>Consumo médio (cx/dia)</label>
+      <input type="number" value={consumoDiario} onChange={(e) => setConsumoDiario(Number(e.target.value))} step="0.1" min="0.1" style={inputStyle} />
+    </div>
+  </div>
+  <div style={{ marginTop: '10px' }}>
+    <label style={{ display: 'block', marginBottom: '3px', fontWeight: 'bold', color: currentTheme.textSecondary, fontSize: '0.85rem' }}>Observações (opcional)</label>
+    <input type="text" value={observacao} onChange={(e) => setObservacao(e.target.value)} placeholder="Ex: pedido grande, promoção..." style={inputStyle} />
+  </div>
+</div>
 
         {/* Itens do Pedido */}
-        <div style={{ 
-          backgroundColor: currentTheme.cardBackground, 
-          padding: '20px', 
-          borderRadius: '8px', 
-          border: `1px solid ${currentTheme.borderColor}`, 
-          marginBottom: '20px', 
-          boxShadow: currentTheme.shadow 
-        }}>
-          <h4 style={{ marginTop: 0, marginBottom: '15px', color: currentTheme.textPrimary }}>🛒 Itens do Pedido</h4>
-          
-          <div style={{ 
-            display: 'flex', 
-            gap: '12px', 
-            flexWrap: 'wrap', 
-            alignItems: 'flex-end', 
-            marginBottom: '12px' 
-          }}>
-            <div style={{ flex: '2 1 180px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Produto</label>
-              <select 
-                value={produtoSelecionado} 
-                onChange={(e) => setProdutoSelecionado(Number(e.target.value))} 
-                style={selectStyle}
-              >
-                {catalogoProdutos.map(p => (
-                  <option key={p.id} value={p.id}>{p.nome} ({p.linha})</option>
-                ))}
-              </select>
-            </div>
-            <div style={{ flex: '0 1 90px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Qtd</label>
-              <input 
-                type="number" 
-                value={quantidadeItem} 
-                onChange={(e) => setQuantidadeItem(Number(e.target.value))} 
-                min="1" 
-                style={inputStyle} 
-              />
-            </div>
-            <div style={{ flex: '0 1 130px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Preço unit.</label>
-              <input 
-                type="number" 
-                value={precoItem} 
-                onChange={(e) => setPrecoItem(Number(e.target.value))} 
-                min="0" 
-                step="0.01" 
-                style={inputStyle} 
-              />
-            </div>
-            <div style={{ flex: '0 1 auto', marginBottom: '1px' }}>
-              <button 
-                onClick={adicionarItem} 
-                style={{ 
-                  padding: '9px 20px', 
-                  backgroundColor: '#1a237e', 
-                  color: 'white', 
-                  border: 'none', 
-                  borderRadius: '4px', 
-                  cursor: 'pointer', 
-                  height: '38px',
-                  fontWeight: 'bold',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                + Adicionar
-              </button>
-            </div>
-          </div>
+<div style={{ 
+  backgroundColor: currentTheme.cardBackground, 
+  padding: '16px', 
+  borderRadius: '8px', 
+  border: `1px solid ${currentTheme.borderColor}`, 
+  marginBottom: '20px', 
+  boxShadow: currentTheme.shadow 
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: '12px', color: currentTheme.textPrimary, fontSize: '1.1rem' }}>🛒 Itens do Pedido</h4>
+  
+  <div style={{ 
+    display: 'flex', 
+    gap: '10px', 
+    flexWrap: 'wrap', 
+    alignItems: 'flex-end', 
+    marginBottom: '12px' 
+  }}>
+    <div style={{ flex: '2 1 160px' }}>
+      <label style={{ display: 'block', marginBottom: '3px', fontSize: '0.8rem', fontWeight: 'bold', color: currentTheme.textSecondary }}>Produto</label>
+      <select 
+        value={produtoSelecionado} 
+        onChange={(e) => setProdutoSelecionado(Number(e.target.value))} 
+        style={selectStyle}
+      >
+        {catalogoProdutos.map(p => (
+          <option key={p.id} value={p.id}>{p.nome} ({p.linha})</option>
+        ))}
+      </select>
+    </div>
+    <div style={{ flex: '0 1 80px' }}>
+      <label style={{ display: 'block', marginBottom: '3px', fontSize: '0.8rem', fontWeight: 'bold', color: currentTheme.textSecondary }}>Qtd</label>
+      <input 
+        type="number" 
+        value={quantidadeItem} 
+        onChange={(e) => setQuantidadeItem(Number(e.target.value))} 
+        min="1" 
+        style={inputStyle} 
+      />
+    </div>
+    <div style={{ flex: '0 1 110px' }}>
+      <label style={{ display: 'block', marginBottom: '3px', fontSize: '0.8rem', fontWeight: 'bold', color: currentTheme.textSecondary }}>Preço unit.</label>
+      <input 
+        type="number" 
+        value={precoItem} 
+        onChange={(e) => setPrecoItem(Number(e.target.value))} 
+        min="0" 
+        step="0.01" 
+        style={inputStyle} 
+      />
+    </div>
+    <div style={{ flex: '0 1 auto', marginBottom: '2px' }}>
+      <button 
+        onClick={adicionarItem} 
+        style={{ 
+          padding: '8px 16px', 
+          backgroundColor: '#1a237e', 
+          color: 'white', 
+          border: 'none', 
+          borderRadius: '4px', 
+          cursor: 'pointer', 
+          height: '36px',
+          fontWeight: 'bold',
+          fontSize: '0.9rem',
+          whiteSpace: 'nowrap'
+        }}
+      >
+        + Adicionar
+      </button>
+    </div>
+  </div>
+
+  {itensPedido.length === 0 ? (
+    <p style={{ color: currentTheme.textMuted, margin: '10px 0 0', fontSize: '0.9rem' }}>Nenhum item adicionado.</p>
+  ) : (
+    <div className="table-wrap">
+      {/* Tabela - mantida igual */}
+      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '400px' }}>
+        <thead>
+          <tr style={{ backgroundColor: currentTheme.tableHeader, color: theme === 'light' ? '#333' : '#fff' }}>
+            <th style={{ padding: '6px', textAlign: 'left', fontSize: '0.85rem' }}>Produto</th>
+            <th style={{ padding: '6px', textAlign: 'right', fontSize: '0.85rem' }}>Qtd</th>
+            <th style={{ padding: '6px', textAlign: 'right', fontSize: '0.85rem' }}>Preço</th>
+            <th style={{ padding: '6px', textAlign: 'right', fontSize: '0.85rem' }}>Subtotal</th>
+            <th style={{ padding: '6px', textAlign: 'center', fontSize: '0.85rem' }}>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {itensPedido.map(item => (
+            <tr key={item.id} style={{ borderBottom: `1px solid ${currentTheme.borderColor}`, color: currentTheme.textSecondary }}>
+              <td style={{ padding: '6px', fontSize: '0.85rem' }}>{item.nome}</td>
+              <td style={{ padding: '6px', textAlign: 'right', fontSize: '0.85rem' }}>{item.quantidade}</td>
+              <td style={{ padding: '6px', textAlign: 'right', fontSize: '0.85rem' }}>R$ {item.preco.toFixed(2)}</td>
+              <td style={{ padding: '6px', textAlign: 'right', fontSize: '0.85rem' }}>R$ {item.subtotal.toFixed(2)}</td>
+              <td style={{ padding: '6px', textAlign: 'center' }}>
+                <button onClick={() => removerItem(item.id)} style={{ padding: '2px 6px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}>🗑️</button>
+              </td>
+            </tr>
+          ))}
+          <tr style={{ fontWeight: 'bold', backgroundColor: theme === 'light' ? '#f9f9f9' : '#2a2a2a', color: currentTheme.textSecondary }}>
+            <td colSpan="1" style={{ padding: '6px', fontSize: '0.9rem' }}>TOTAIS</td>
+            <td style={{ padding: '6px', textAlign: 'right', fontSize: '0.9rem' }}>{totalCaixas} caixas</td>
+            <td style={{ padding: '6px', textAlign: 'right' }}></td>
+            <td style={{ padding: '6px', textAlign: 'right', fontSize: '0.9rem' }}>R$ {totalValor.toFixed(2)}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
 
           {itensPedido.length === 0 ? (
             <p style={{ color: currentTheme.textMuted, margin: '10px 0 0' }}>Nenhum item adicionado.</p>
@@ -671,7 +713,7 @@ function App() {
           <p>© 2026 Higyés - Sistema de Previsão de Pedidos</p>
         </div>
       </div>
-    </div>
+    
   );
 }
 
