@@ -4,9 +4,9 @@ import { useState, useMemo } from 'react';
 const catalogoProdutos = [
   { id: 1, nome: 'Pasta Abrasiva Chauffeur 2kg', linha: 'Industrial' },
   { id: 2, nome: 'Pasta Abrasiva Chauffeur 500g', linha: 'Industrial' },
-  { id: 3, nome: 'Sabão Abrasivo Chauffeur Suave', linha: 'Industrial' },
-  { id: 4, nome: 'Sabão Abrasivo Chauffeur Tradicional', linha: 'Industrial' },
-  { id: 5, nome: 'Sabão Abrasivo Higyés', linha: 'Industrial' },
+  { id: 3, nome: 'Sabão Abrasivo Chauffeur Suave 200g', linha: 'Industrial' },
+  { id: 4, nome: 'Sabão Abrasivo Chauffeur Tradicional 100g', linha: 'Industrial' },
+  { id: 5, nome: 'Sabão Abrasivo Higyés 100g', linha: 'Industrial' },
   { id: 6, nome: 'Sabão de Coco 50x200g', linha: 'Doméstica' },
   { id: 7, nome: 'Sabão Glicerinado 50x200g', linha: 'Doméstica' },
   { id: 8, nome: 'Pasta para Limpeza 24x300g', linha: 'Doméstica' },
@@ -16,7 +16,8 @@ const catalogoProdutos = [
   { id: 12, nome: 'Sabonete Glicerina Marbot Eucalipto', linha: 'Higiene Pessoal' },
   { id: 13, nome: 'Sabonete Glicerina Marbot Limão', linha: 'Higiene Pessoal' },
   { id: 14, nome: 'Sabonete Glicerina Marbot Natural', linha: 'Higiene Pessoal' },
-  { id: 15, nome: 'Sabonete Glicerina Marbot Rosas', linha: 'Higiene Pessoal' }
+  { id: 15, nome: 'Sabonete Glicerina Marbot Rosas', linha: 'Higiene Pessoal' },
+  { id: 16, nome: 'Sabonete Glicerina Marbot Erva Doce', linha: 'Higiene Pessoal' }
 ];
 
 function App() {
@@ -289,7 +290,7 @@ function App() {
         }
       `}</style>
 
-      {/* BOTÃO DARK/LIGHT MODE - Canto Superior Esquerdo */}
+      {/* BOTÃO DARK/LIGHT MODE */}
       <div style={{
         position: 'fixed',
         top: '15px',
@@ -320,7 +321,7 @@ function App() {
         </button>
       </div>
 
-      {/* BOTÃO DE ALERTAS - Canto Superior Direito (mantido) */}
+      {/* BOTÃO DE ALERTAS */}
       <div style={{
         position: 'fixed',
         top: '15px',
@@ -424,35 +425,55 @@ function App() {
         <p style={{ textAlign: 'center', color: currentTheme.textMuted }}>Monte o pedido e calcule quando o cliente deve comprar novamente</p>
 
         {/* Dados do Cliente */}
-        <div style={{ backgroundColor: currentTheme.cardBackground, padding: '15px', borderRadius: '8px', marginBottom: '20px', border: `1px solid ${currentTheme.borderColor}`, boxShadow: currentTheme.shadow }}>
-          <h4 style={{ marginTop: 0, color: currentTheme.textPrimary }}>📋 Dados do Cliente</h4>
-          <div className="grid-3">
+        <div style={{ 
+          backgroundColor: currentTheme.cardBackground, 
+          padding: '20px', 
+          borderRadius: '8px', 
+          marginBottom: '20px', 
+          border: `1px solid ${currentTheme.borderColor}`, 
+          boxShadow: currentTheme.shadow 
+        }}>
+          <h4 style={{ marginTop: 0, marginBottom: '15px', color: currentTheme.textPrimary }}>📋 Dados do Cliente</h4>
+          <div className="grid-3" style={{ gap: '16px' }}>
             <div>
-              <label><strong>Cliente *</strong></label>
-              <input type="text" value={clienteAtual} onChange={(e) => setClienteAtual(e.target.value)} placeholder="Nome" style={inputStyle} />
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Cliente *</label>
+              <input type="text" value={clienteAtual} onChange={(e) => setClienteAtual(e.target.value)} placeholder="Nome do cliente" style={inputStyle} />
             </div>
             <div>
-              <label><strong>Data do último pedido *</strong></label>
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Data do último pedido *</label>
               <input type="date" value={dataUltimoPedido} onChange={(e) => setDataUltimoPedido(e.target.value)} style={inputStyle} />
             </div>
             <div>
-              <label><strong>Consumo médio diário (caixas/dia)</strong></label>
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Consumo médio diário (caixas/dia)</label>
               <input type="number" value={consumoDiario} onChange={(e) => setConsumoDiario(Number(e.target.value))} step="0.1" min="0.1" style={inputStyle} />
             </div>
           </div>
-          <div style={{ marginTop: '10px' }}>
-            <label><strong>Observações (opcional)</strong></label>
+          <div style={{ marginTop: '12px' }}>
+            <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Observações (opcional)</label>
             <input type="text" value={observacao} onChange={(e) => setObservacao(e.target.value)} placeholder="Ex: pedido grande, promoção..." style={inputStyle} />
           </div>
         </div>
 
         {/* Itens do Pedido */}
-        <div style={{ backgroundColor: currentTheme.cardBackground, padding: '15px', borderRadius: '8px', border: `1px solid ${currentTheme.borderColor}`, marginBottom: '20px', boxShadow: currentTheme.shadow }}>
-          <h4 style={{ marginTop: 0, color: currentTheme.textPrimary }}>🛒 Itens do Pedido</h4>
+        <div style={{ 
+          backgroundColor: currentTheme.cardBackground, 
+          padding: '20px', 
+          borderRadius: '8px', 
+          border: `1px solid ${currentTheme.borderColor}`, 
+          marginBottom: '20px', 
+          boxShadow: currentTheme.shadow 
+        }}>
+          <h4 style={{ marginTop: 0, marginBottom: '15px', color: currentTheme.textPrimary }}>🛒 Itens do Pedido</h4>
           
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '10px', alignItems: 'flex-end' }}>
-            <div style={{ flex: '2 1 150px' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Produto</label>
+          <div style={{ 
+            display: 'flex', 
+            gap: '12px', 
+            flexWrap: 'wrap', 
+            alignItems: 'flex-end', 
+            marginBottom: '12px' 
+          }}>
+            <div style={{ flex: '2 1 180px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Produto</label>
               <select 
                 value={produtoSelecionado} 
                 onChange={(e) => setProdutoSelecionado(Number(e.target.value))} 
@@ -463,8 +484,8 @@ function App() {
                 ))}
               </select>
             </div>
-            <div style={{ flex: '0 1 80px' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Qtd</label>
+            <div style={{ flex: '0 1 90px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Qtd</label>
               <input 
                 type="number" 
                 value={quantidadeItem} 
@@ -473,8 +494,8 @@ function App() {
                 style={inputStyle} 
               />
             </div>
-            <div style={{ flex: '0 1 120px' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Preço unit.</label>
+            <div style={{ flex: '0 1 130px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 'bold', color: currentTheme.textSecondary }}>Preço unit.</label>
               <input 
                 type="number" 
                 value={precoItem} 
@@ -484,18 +505,28 @@ function App() {
                 style={inputStyle} 
               />
             </div>
-            <div style={{ flex: '0 1 auto' }}>
+            <div style={{ flex: '0 1 auto', marginBottom: '1px' }}>
               <button 
                 onClick={adicionarItem} 
-                style={{ padding: '8px 16px', backgroundColor: '#1a237e', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', height: '38px' }}
+                style={{ 
+                  padding: '9px 20px', 
+                  backgroundColor: '#1a237e', 
+                  color: 'white', 
+                  border: 'none', 
+                  borderRadius: '4px', 
+                  cursor: 'pointer', 
+                  height: '38px',
+                  fontWeight: 'bold',
+                  whiteSpace: 'nowrap'
+                }}
               >
-                Adicionar
+                + Adicionar
               </button>
             </div>
           </div>
 
           {itensPedido.length === 0 ? (
-            <p style={{ color: currentTheme.textMuted }}>Nenhum item adicionado.</p>
+            <p style={{ color: currentTheme.textMuted, margin: '10px 0 0' }}>Nenhum item adicionado.</p>
           ) : (
             <div className="table-wrap">
               <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '400px' }}>
@@ -534,9 +565,47 @@ function App() {
         </div>
 
         {/* Botões principais */}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
-          <button onClick={calcularPrevisao} style={{ padding: '12px 24px', backgroundColor: '#1a237e', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', flex: '1 1 200px', fontWeight: 'bold' }}>🔮 Calcular Previsão</button>
-          <button onClick={resetarFormulario} style={{ padding: '12px 24px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', flex: '1 1 120px' }}>🗑️ Limpar</button>
+        <div style={{ 
+          display: 'flex', 
+          gap: '12px', 
+          flexWrap: 'wrap', 
+          justifyContent: 'center', 
+          marginBottom: '20px' 
+        }}>
+          <button 
+            onClick={calcularPrevisao} 
+            style={{ 
+              padding: '12px 32px', 
+              backgroundColor: '#1a237e', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '6px', 
+              cursor: 'pointer', 
+              fontWeight: 'bold',
+              fontSize: '16px',
+              minWidth: '180px',
+              flex: '1 1 auto'
+            }}
+          >
+            🔮 Calcular Previsão
+          </button>
+          <button 
+            onClick={resetarFormulario} 
+            style={{ 
+              padding: '12px 32px', 
+              backgroundColor: '#f44336', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '6px', 
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '16px',
+              minWidth: '120px',
+              flex: '1 1 auto'
+            }}
+          >
+            🗑️ Limpar
+          </button>
         </div>
 
         {/* Resultado da Previsão */}
