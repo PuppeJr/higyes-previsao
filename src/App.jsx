@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { adicionarDias, diasEntreDatas, estimarConsumoDiario, formatarData, obterEstacao, paraDataISO } from './previsao.js';
 
 // Catálogo completo de produtos Higyés
 const catalogoProdutos = [
@@ -71,7 +72,7 @@ function App() {
   // Estados do pedido atual
   const [clienteAtual, setClienteAtual] = useState('');
   const [dataUltimoPedido, setDataUltimoPedido] = useState('');
-  const [consumoDiario, setConsumoDiario] = useState(5);
+  const [consumoDiario, setConsumoDiario] = useState('');
   const [itensPedido, setItensPedido] = useState([]);
   const [produtoSelecionado, setProdutoSelecionado] = useState(catalogoProdutos[0].id);
   const [quantidadeItem, setQuantidadeItem] = useState(1);
@@ -90,10 +91,12 @@ function App() {
 
   // Calcular pedidos urgentes
   const pedidosUrgentes = useMemo(() => {
-    const hoje = new Date();
+    const dataAtual = new Date();
+    const hoje = paraDataISO(`${dataAtual.getFullYear()}-${String(dataAtual.getMonth() + 1).padStart(2, '0')}-${String(dataAtual.getDate()).padStart(2, '0')}`);
     return historicoPedidos.filter(pedido => {
-      const dataProxima = new Date(pedido.dataProximaCompra);
-      const diff = (dataProxima - hoje) / (1000 * 60 * 60 * 24);
+      const dataProxima = paraDataISO(pedido.dataProximaCompraISO || pedido.dataProximaCompra);
+      if (!dataProxima || !hoje || pedido.diasParaProxima == null) return false;
+      const diff = diasEntreDatas(hoje, dataProxima);
       return diff <= 15 && diff >= 0;
     });
   }, [historicoPedidos]);
@@ -149,19 +152,22 @@ function App() {
       alert('Adicione pelo menos um item ao pedido!');
       return;
     }
-    if (consumoDiario <= 0) {
+    const consumoInformado = consumoDiario === '' ? null : Number(consumoDiario);
+    if (consumoInformado !== null && (!Number.isFinite(consumoInformado) || consumoInformado <= 0)) {
       alert('Informe um consumo médio diário válido!');
       return;
     }
 
-    const dataUltima = new Date(dataUltimoPedido);
-    const diasEstoque = totalCaixas / consumoDiario;
-    const diasParaProxima = Math.round(diasEstoque);
-    const dataProxima = new Date(dataUltima);
-    dataProxima.setDate(dataProxima.getDate() + diasParaProxima);
+    const consumoEstimado = consumoInformado ?? estimarConsumoDiario(clienteAtual, dataUltimoPedido, historicoPedidos);
+    const diasParaProxima = consumoEstimado ? Math.ceil(totalCaixas / consumoEstimado) : null;
+    const dataProximaISO = diasParaProxima === null ? null : adicionarDias(dataUltimoPedido, diasParaProxima);
 
     let status, cor, statusDesc;
-    if (diasParaProxima <= 15) {
+    if (diasParaProxima === null) {
+      status = '⚪ Aguardando histórico';
+      cor = '#757575';
+      statusDesc = 'Pedido registrado. A próxima compra deste comércio permitirá estimar o consumo diário.';
+    } else if (diasParaProxima <= 15) {
       status = '🔴 URGENTE';
       cor = '#f44336';
       statusDesc = 'Cliente precisa de contato imediato! ⚠️';
@@ -183,12 +189,16 @@ function App() {
       id: crypto.randomUUID(),
       cliente: clienteAtual,
       dataUltimoPedido: dataUltimoPedido,
-      dataProximaCompra: dataProxima.toLocaleDateString('pt-BR'),
+      dataProximaCompraISO: dataProximaISO,
+      dataProximaCompra: dataProximaISO ? formatarData(dataProximaISO) : null,
+      estacaoUltimoPedido: obterEstacao(dataUltimoPedido),
+      estacaoProximaCompra: dataProximaISO ? obterEstacao(dataProximaISO) : null,
       diasParaProxima: diasParaProxima,
       itens: itensPedido,
       totalCaixas: totalCaixas,
       totalValor: totalValor,
-      consumoDiario: consumoDiario,
+      consumoDiario: consumoEstimado,
+      consumoEstimadoPorHistorico: consumoInformado === null && consumoEstimado !== null,
       status,
       cor,
       statusDesc,
@@ -199,7 +209,7 @@ function App() {
     setPrevisao(novoPedido);
     atualizarHistorico([novoPedido, ...historicoPedidos]);
 
-    if (diasParaProxima <= 15) {
+    if (diasParaProxima !== null && diasParaProxima <= 15) {
       setMostrarAviso(true);
     }
   };
@@ -208,7 +218,7 @@ function App() {
   const resetarFormulario = () => {
     setClienteAtual('');
     setDataUltimoPedido('');
-    setConsumoDiario(5);
+    setConsumoDiario('');
     setItensPedido([]);
     setPrevisao(null);
     setObservacao('');
@@ -227,7 +237,7 @@ function App() {
   const carregarPedido = (pedido) => {
     setClienteAtual(pedido.cliente);
     setDataUltimoPedido(pedido.dataUltimoPedido);
-    setConsumoDiario(pedido.consumoDiario);
+    setConsumoDiario(pedido.consumoDiario || '');
     setItensPedido(pedido.itens);
     setObservacao(pedido.observacao || '');
     setPrevisao(pedido);
@@ -408,8 +418,8 @@ function App() {
                 {pedidosUrgentes.map((p, i) => (
                   <div key={i} style={{ border: '1px solid #f44336', borderRadius: '8px', padding: '12px', marginBottom: '10px', backgroundColor: theme === 'light' ? '#ffebee' : '#2a1212' }}>
                     <strong>{p.cliente}</strong>
-                    <div>Último pedido: {p.dataUltimoPedido}</div>
-                    <div>Próxima compra: {p.dataProximaCompra}</div>
+                    <div>Último pedido: {formatarData(p.dataUltimoPedido)} ({p.estacaoUltimoPedido || obterEstacao(p.dataUltimoPedido)})</div>
+                    <div>Próxima compra: {formatarData(p.dataProximaCompraISO || p.dataProximaCompra)} ({p.estacaoProximaCompra || obterEstacao(p.dataProximaCompraISO || p.dataProximaCompra)})</div>
                     <div>Dias restantes: {p.diasParaProxima}</div>
                   </div>
                 ))}
@@ -445,10 +455,15 @@ function App() {
       <input type="date" value={dataUltimoPedido} onChange={(e) => setDataUltimoPedido(e.target.value)} style={inputStyle} />
     </div>
     <div>
-      <label style={{ display: 'block', marginBottom: '3px', fontWeight: 'bold', color: currentTheme.textSecondary, fontSize: '0.85rem' }}>Consumo médio (cx/dia)</label>
-      <input type="number" value={consumoDiario} onChange={(e) => setConsumoDiario(Number(e.target.value))} step="0.1" min="0.1" style={inputStyle} />
+      <label style={{ display: 'block', marginBottom: '3px', fontWeight: 'bold', color: currentTheme.textSecondary, fontSize: '0.85rem' }}>Consumo médio (cx/dia, opcional)</label>
+      <input type="number" value={consumoDiario} onChange={(e) => setConsumoDiario(e.target.value)} step="0.1" min="0.1" placeholder="Vazio: estimar pelo histórico" style={inputStyle} />
     </div>
   </div>
+  {dataUltimoPedido && (
+    <p style={{ margin: '8px 0 0', color: currentTheme.textMuted, fontSize: '0.8rem' }}>
+      Estação na data do pedido: <strong>{obterEstacao(dataUltimoPedido)}</strong> (referência do calendário brasileiro; não é previsão meteorológica). As datas de transição podem variar um dia por ano. Deixe o consumo vazio para usar o histórico deste cliente.
+    </p>
+  )}
   <div style={{ marginTop: '10px' }}>
     <label style={{ display: 'block', marginBottom: '3px', fontWeight: 'bold', color: currentTheme.textSecondary, fontSize: '0.85rem' }}>Observações (opcional)</label>
     <input type="text" value={observacao} onChange={(e) => setObservacao(e.target.value)} placeholder="Ex: pedido grande, promoção..." style={inputStyle} />
@@ -662,17 +677,22 @@ function App() {
               <div>
                 <p><strong>Total de caixas:</strong> {previsao.totalCaixas}</p>
                 <p><strong>Valor total:</strong> R$ {previsao.totalValor.toFixed(2)}</p>
-                <p><strong>Consumo diário:</strong> {previsao.consumoDiario} caixas/dia</p>
+                <p><strong>Consumo diário:</strong> {previsao.consumoDiario
+                  ? `${previsao.consumoDiario.toFixed(2)} caixas/dia${previsao.consumoEstimadoPorHistorico ? ' (estimativa pelo histórico)' : ''}`
+                  : 'Ainda não há histórico suficiente para estimar'}</p>
               </div>
               <div>
-                <p><strong>Último pedido:</strong> {previsao.dataUltimoPedido}</p>
-                <p><strong>Próxima compra:</strong> <span style={{ fontWeight: 'bold', color: previsao.cor }}>{previsao.dataProximaCompra}</span></p>
-                <p><strong>Dias até próxima compra:</strong> <span style={{ fontWeight: 'bold', color: previsao.cor }}>{previsao.diasParaProxima} dias</span></p>
+                <p><strong>Último pedido:</strong> {formatarData(previsao.dataUltimoPedido)} — {previsao.estacaoUltimoPedido}</p>
+                <p><strong>Próxima compra:</strong> <span style={{ fontWeight: 'bold', color: previsao.cor }}>{previsao.dataProximaCompra || 'Aguardando nova compra'}</span>
+                  {previsao.estacaoProximaCompra && ` — ${previsao.estacaoProximaCompra}`}</p>
+                {previsao.diasParaProxima !== null && <p><strong>Dias até próxima compra:</strong> <span style={{ fontWeight: 'bold', color: previsao.cor }}>{previsao.diasParaProxima} dias</span></p>}
               </div>
             </div>
             {previsao.observacao && <p><strong>Observação:</strong> {previsao.observacao}</p>}
             <div style={{ marginTop: '15px', padding: '10px', backgroundColor: currentTheme.alertBg, borderRadius: '4px', textAlign: 'center' }}>
-              <strong>📞 Recomendação:</strong> Entre em contato com o cliente em <span style={{ fontWeight: 'bold', color: previsao.cor }}>{previsao.dataProximaCompra}</span>
+              {previsao.dataProximaCompra
+                ? <><strong>📞 Recomendação:</strong> Entre em contato com o cliente em <span style={{ fontWeight: 'bold', color: previsao.cor }}>{previsao.dataProximaCompra}</span> ({previsao.estacaoProximaCompra}).</>
+                : <><strong>📊 Próximo passo:</strong> registre a próxima compra para o sistema aprender o consumo diário deste comércio.</>}
             </div>
           </div>
         )}
@@ -698,10 +718,10 @@ function App() {
                       {pedido.status.includes('URGENTE') && <span style={{ marginLeft: '10px', backgroundColor: '#f44336', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>🚨 URGENTE</span>}
                     </div>
                     <div>
-                      <span style={{ backgroundColor: pedido.cor, color: 'white', padding: '2px 10px', borderRadius: '12px', fontSize: '12px' }}>{pedido.diasParaProxima} dias</span>
+                      <span style={{ backgroundColor: pedido.cor, color: 'white', padding: '2px 10px', borderRadius: '12px', fontSize: '12px' }}>{pedido.diasParaProxima != null ? `${pedido.diasParaProxima} dias` : 'Sem previsão'}</span>
                     </div>
                   </div>
-                  <div style={{ fontSize: '12px', color: currentTheme.textMuted, marginTop: '4px' }}>Próxima compra: {pedido.dataProximaCompra} | Criado em: {pedido.dataCriacao}</div>
+                  <div style={{ fontSize: '12px', color: currentTheme.textMuted, marginTop: '4px' }}>Próxima compra: {pedido.dataProximaCompra || 'Aguardando histórico'}{pedido.estacaoProximaCompra && ` (${pedido.estacaoProximaCompra})`} | Criado em: {pedido.dataCriacao}</div>
                 </div>
               ))}
             </div>
