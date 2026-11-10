@@ -7,16 +7,23 @@
 
 ## 🎯 Sobre o Projeto
 
-**Higyes Previsão** é um sistema inteligente de previsão de pedidos desenvolvido para otimizar a gestão de demanda da empresa Higyés. A aplicação utiliza análise de dados avançada para fornecer previsões precisas de pedidos, ajudando na tomada de decisões estratégicas e na otimização de inventário.
+**Higyes Previsão** é um sistema inteligente de previsão de pedidos desenvolvido
+para otimizar a gestão de demanda da empresa Higyés. A aplicação utiliza análise
+de dados avançada para fornecer previsões precisas de pedidos, ajudando na
+tomada de decisões estratégicas e na otimização de inventário.
 
 **Acesse agora:** [https://higyes-previsao.vercel.app/](https://higyes-previsao.vercel.app/)
 
 ### Funcionalidades Principais
 
-- 📈 **Previsão Inteligente de Pedidos**: Algoritmos avançados para prever demanda futura
-- 📊 **Análise de Dados em Tempo Real**: Visualização de métricas e indicadores de performance
-- 💾 **Gestão de Dados Históricos**: Armazenamento e análise de histórico de pedidos
-- 🔍 **Relatórios Detalhados**: Geração de relatórios completos e exportação de dados
+- 📈 **Previsão Inteligente de Pedidos**: Algoritmos avançados para prever
+  demanda futura
+- 📊 **Análise de Dados em Tempo Real**: Visualização de métricas e indicadores
+  de performance
+- 💾 **Gestão de Dados Históricos**: Armazenamento e análise de histórico de
+  pedidos
+- 🔍 **Relatórios Detalhados**: Geração de relatórios completos e exportação de
+  dados
 - 🎨 **Interface Intuitiva**: Design responsivo e fácil de usar
 - ⚡ **Performance Otimizada**: Carregamento rápido e fluidez na navegação
 - 🔐 **Segurança de Dados**: Proteção de informações sensíveis da empresa
@@ -24,11 +31,13 @@
 ## 🛠️ Stack Tecnológico
 
 ### Frontend
+
 - **React 19.2.7**: Biblioteca JavaScript para construção de interfaces de usuário
 - **Vite 8.1.1**: Build tool rápido e moderno
 - **JavaScript (ESM)**: Módulos ECMAScript para melhor organização de código
 
 ### Desenvolvimento
+
 - **ESLint 10.6.0**: Linting de código para manutenção de qualidade
 - **React Refresh**: Hot module replacement para melhor experiência de desenvolvimento
 - **TypeScript Support**: Tipagem estática para maior confiabilidade
@@ -84,7 +93,7 @@ yarn preview
 
 ## 📁 Estrutura do Projeto
 
-```
+```text
 higyes-previsao/
 ├── src/                 # Código-fonte principal
 │   ├── components/      # Componentes React reutilizáveis
@@ -118,7 +127,7 @@ Consulte a documentação completa sobre endpoints e integração no wiki do pro
 ## 🔄 Scripts Disponíveis
 
 | Script | Descrição |
-|--------|-----------|
+| ------ | --------- |
 | `npm run dev` | Inicia servidor de desenvolvimento com hot reload |
 | `npm run build` | Cria build otimizada para produção |
 | `npm run lint` | Analisa e valida qualidade do código |
@@ -143,7 +152,8 @@ Contribuições são bem-vindas! Para contribuir:
 
 ## 🐛 Reportando Bugs
 
-Encontrou um bug? [Abra uma issue](https://github.com/PuppeJr/higyes-previsao/issues) descrevendo:
+Encontrou um bug? [Abra uma issue](https://github.com/PuppeJr/higyes-previsao/issues)
+descrevendo:
 
 - Comportamento esperado vs. comportamento atual
 - Passos para reproduzir o problema
@@ -169,7 +179,8 @@ Encontrou um bug? [Abra uma issue](https://github.com/PuppeJr/higyes-previsao/is
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+Este projeto está licenciado sob a Licença MIT - veja o arquivo
+[LICENSE](LICENSE) para detalhes.
 
 ## 🙏 Agradecimentos
 
@@ -186,6 +197,8 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 ### SEO & Meta-Informações
 
-- **Palavras-chave**: previsão de pedidos, sistema de demanda, análise de dados, React, Vite, aplicação web
-- **Descrição**: Sistema inteligente de previsão de pedidos para Higyés com análise de dados em tempo real
-- **URL**: https://higyes-previsao.vercel.app/
+- **Palavras-chave**: previsão de pedidos, sistema de demanda, análise de dados,
+  React, Vite, aplicação web
+- **Descrição**: Sistema inteligente de previsão de pedidos para Higyés com
+  análise de dados em tempo real
+- **URL**: [https://higyes-previsao.vercel.app/](https://higyes-previsao.vercel.app/)
