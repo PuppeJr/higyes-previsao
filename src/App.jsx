@@ -8,17 +8,19 @@ const catalogoProdutos = [
   { id: 3, nome: 'Sabão Abrasivo Chauffeur Suave 200g', linha: 'Industrial' },
   { id: 4, nome: 'Sabão Abrasivo Chauffeur Tradicional 100g', linha: 'Industrial' },
   { id: 5, nome: 'Sabão Abrasivo Higyés 100g', linha: 'Industrial' },
-  { id: 6, nome: 'Sabão de Coco 50x200g', linha: 'Doméstica' },
-  { id: 7, nome: 'Sabão Glicerinado 50x200g', linha: 'Doméstica' },
-  { id: 8, nome: 'Pasta para Limpeza 24x300g', linha: 'Doméstica' },
-  { id: 9, nome: 'Saponáceo em Pó Limão 10x300g', linha: 'Doméstica' },
-  { id: 10, nome: 'Saponáceo em Pó Natural 10x300g', linha: 'Doméstica' },
-  { id: 11, nome: 'Saponáceo em Pó Pinho 10x300g', linha: 'Doméstica' },
-  { id: 12, nome: 'Sabonete Glicerina Marbot Eucalipto', linha: 'Higiene Pessoal' },
-  { id: 13, nome: 'Sabonete Glicerina Marbot Limão', linha: 'Higiene Pessoal' },
-  { id: 14, nome: 'Sabonete Glicerina Marbot Natural', linha: 'Higiene Pessoal' },
-  { id: 15, nome: 'Sabonete Glicerina Marbot Rosas', linha: 'Higiene Pessoal' },
-  { id: 16, nome: 'Sabonete Glicerina Marbot Erva Doce', linha: 'Higiene Pessoal' }
+  { id: 6, nome: 'Sabão de Coco 32x400g', linha: 'Doméstica' },
+  { id: 7, nome: 'Sabão Glicerinado 32x400g', linha: 'Doméstica' },
+  { id: 8, nome: 'Sabão de Coco 50x200g', linha: 'Doméstica' },
+  { id: 9, nome: 'Sabão Glicerinado 50x200g', linha: 'Doméstica' },
+  { id: 10, nome: 'Pasta para Limpeza 24x300g', linha: 'Doméstica' },
+  { id: 11, nome: 'Saponáceo em Pó Limão 10x300g', linha: 'Doméstica' },
+  { id: 12, nome: 'Saponáceo em Pó Natural 10x300g', linha: 'Doméstica' },
+  { id: 13, nome: 'Saponáceo em Pó Pinho 10x300g', linha: 'Doméstica' },
+  { id: 14, nome: 'Sabonete Glicerina Marbot Eucalipto', linha: 'Higiene Pessoal' },
+  { id: 15, nome: 'Sabonete Glicerina Marbot Limão', linha: 'Higiene Pessoal' },
+  { id: 16, nome: 'Sabonete Glicerina Marbot Natural', linha: 'Higiene Pessoal' },
+  { id: 17, nome: 'Sabonete Glicerina Marbot Rosas', linha: 'Higiene Pessoal' },
+  { id: 18, nome: 'Sabonete Glicerina Marbot Erva Doce', linha: 'Higiene Pessoal' }
 ];
 
 function App() {
